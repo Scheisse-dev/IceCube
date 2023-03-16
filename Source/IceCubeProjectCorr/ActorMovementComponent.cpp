@@ -7,14 +7,11 @@ UActorMovementComponent::UActorMovementComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 }
-
-
 void UActorMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	settings.initLocation = GetOwner()->GetActorLocation();
 }
-
 void UActorMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -30,6 +27,7 @@ void UActorMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	
 }
 #pragma endregion 
+
 #pragma region custom
 void UActorMovementComponent::MoveForward(float _axis)
 {
@@ -37,14 +35,12 @@ void UActorMovementComponent::MoveForward(float _axis)
 		return;
 	settings.forwardAxis = FMath::Lerp(settings.forwardAxis, _axis, DELTATIME * settings.forwardWeight);
 }
-
 void UActorMovementComponent::MoveHorizontal(float _axis)
 {
 	if (isInResetStatus)
 		return;
 	settings.horizontalAxis = FMath::Lerp(settings.horizontalAxis, _axis, DELTATIME * settings.horizontalWeight);
 }
-
 void UActorMovementComponent::Rotate(float _axis)
 {
 	if (isInResetStatus)
@@ -72,7 +68,7 @@ void UActorMovementComponent::ResetBehaviour()
 		OnEndReset();
 		return;
 	}
-
+	onResetMovement.Broadcast(settings.GetResterRatio());
 	GetOwner()->SetActorLocation(FMath::Lerp(settings.currentLocation, settings.initLocation, settings.GetResterRatio()));
 }
 void UActorMovementComponent::CallReset()

@@ -64,6 +64,9 @@
 #define RESPAWN "Respawn"
 #define INTERACT "Interact"
 #define ACTORSCALE GetActorScale()
+
+#define PAWN GetWorld()->GetFirstPlayerController()->GetPawn()
+#define LERP(value, targetValue, t) FMath::Lerp(value, targetValue, t)
 //#define TO_CHAR(string) *string
 //#define TO_STRING(notString) notStyring.ToString()
 //#define TO_CHAR_STR(text) TO_CHAR(TO_STRING(text))

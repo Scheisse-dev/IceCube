@@ -13,8 +13,8 @@ struct FIceCubeSettings
 {
 	GENERATED_BODY()
 
-
 		FVector initSize = FVector(1);
+		FVector startScale;
 	UPROPERTY(EditAnywhere, meta = (UIMin = 1, ClampMin = 1))
 		float divideSizeBy = 3;
 
@@ -24,7 +24,7 @@ struct FIceCubeSettings
 private:
 	float currentTime = 0;
 public:
-
+	
 	FORCEINLINE float ScaleRatio() const
 	{
 		return currentTime / meltingTime;
@@ -45,6 +45,11 @@ public:
 	FORCEINLINE void UpdateScale(AActor* _target)
 	{
 		_target->SetActorScale3D(FMath::Lerp(initSize, TargetSize(), ScaleRatio()));
+	}
+	FORCEINLINE void ResetScale(AActor* _target, float _factor)
+	{
+		currentTime = 0;
+		_target->SetActorScale3D(FMath::Lerp(startScale, initSize, _factor));
 	}
 };
 
@@ -74,4 +79,6 @@ private:
 	void BindInputs();
 	void ScaleBehaviour();
 	void InitIceCube();
+	UFUNCTION() void ResetIceSizeBehaviour(float _scale);
+	void StartResetIce();
 };

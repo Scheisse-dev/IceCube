@@ -1,7 +1,7 @@
 
 #include "IceCube.h"
 
-
+#pragma region UE 
 AIceCube::AIceCube()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -34,14 +34,14 @@ void AIceCube::Tick(float DeltaTime)
 	ScaleBehaviour();
 	DRAW_BOX(GetActorLocation(), settings.TargetSize(), FColor::Red, 2);
 	DRAW_BOX(GetActorLocation(), settings.initSize * 100, FColor::Red, 2);
-
-
 }
+#pragma endregion
 #pragma region ICE
 void AIceCube::InitIceCube()
 {
 	WORLD->GetFirstPlayerController()->SetViewTarget(this);
 	settings.initSize = GetActorScale();
+	movement->OnResetMovement().AddDynamic(this, &AIceCube::ResetIceSizeBehaviour);
 }
 void AIceCube::BindInputs()
 {
@@ -49,6 +49,7 @@ void AIceCube::BindInputs()
 	BIND_AXIS(HORIZONTAL, movement.Get(), &UActorMovementComponent::MoveHorizontal);
 	BIND_AXIS(ROTATE, movement.Get(), &UActorMovementComponent::Rotate);
 	BIND_ACTION(RESET, EInputEvent::IE_Pressed, movement.Get(), &UActorMovementComponent::CallReset);
+	BIND_ACTION(RESET, EInputEvent::IE_Pressed, this, &AIceCube::StartResetIce);
 }
 void AIceCube::ScaleBehaviour()
 {
@@ -57,5 +58,13 @@ void AIceCube::ScaleBehaviour()
 	movement->UpdateForwadWeight(1 - settings.ScaleRatio() + 0.1f);
 	movement->UpdateHorizontalWeight(1 - settings.ScaleRatio() + 0.1f);
 	movement->UpdateRotateWeight(1 - settings.ScaleRatio() + 0.1f);
+}
+void AIceCube::ResetIceSizeBehaviour(float _scale)
+{
+	settings.ResetScale(this, _scale);
+}
+void AIceCube::StartResetIce()
+{
+	settings.startScale = GetActorScale();
 }
 #pragma endregion ICE

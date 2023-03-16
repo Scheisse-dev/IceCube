@@ -61,13 +61,13 @@ class ICECUBEPROJECTCORR_API UActorMovementComponent : public UActorComponent
 	GENERATED_BODY()
 
 
-		DECLARE_DYNAMIC_DELEGATE_OneParam(FOnResetMovement, float, _ratio);
+		DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnResetMovement, float, _ratio);
 		UPROPERTY(EditAnywhere)
 		FMovementSettings settings;
 
 
-	FOnResetMovement onResetMovement;
 	bool isInResetStatus = false;
+	FOnResetMovement onResetMovement;
 public:	
 	UActorMovementComponent();
 	FORCEINLINE FOnResetMovement& OnResetMovement() {
