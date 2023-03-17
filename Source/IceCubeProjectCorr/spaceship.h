@@ -22,21 +22,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		float speed = 10;
 
-	//FVector currentLocation;
-
-	FVector targetLocation = FVector(0);
-	FRotator targetRotator = FRotator(0);
-	FRotator initialRotation;
-
-
-	FORCEINLINE void SetTargetLocation(FVector _target)
-	{
-		targetLocation = _target;
-	}
-	FORCEINLINE void SetTargetRotation(FRotator _target)
-	{
-		targetRotator = _target;
-	}
 
 };
 
@@ -53,7 +38,22 @@ class ICECUBEPROJECTCORR_API Aspaceship : public APawn
 		UPROPERTY(EditAnywhere)
 			TObjectPtr<UFloatingPawnMovement> movement = nullptr;
 
+
+		UPROPERTY(EditAnywhere, category = Weight)
+			float fwdWeight = 1;
+		UPROPERTY(EditAnywhere, category = Weight)
+			float rotateWeight = 1;
+		UPROPERTY(EditAnywhere, category = Weight)
+			float pitchWeight = 1;
+		UPROPERTY(EditAnywhere)
+			float bankAngle = 45;
+
+		FVector shipVelocity;
+		float forwardVelocity,
+			rotateAxis,
+			pitchAxis;
 		FSpaceMovement settings;
+		float maxPitchAngle = 45;
 
 public:
 	Aspaceship();
@@ -62,6 +62,5 @@ private:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void MoveForward(float _axis);
-	void MoveHorizontal(float _axis);
 	void Rotate(float _axis);
 };
