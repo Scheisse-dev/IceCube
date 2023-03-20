@@ -54,7 +54,7 @@
 #define INVOKE(action) action.Broadcast()
 
 //#define BIND();
-
+//#define BIND_ACTION_PAWN(name, eventType, owner, methods,...) GetWorld()->GetFirstPlayerController()
 
 #define RESET "Reset"
 #define HORIZONTAL "Horizontal"
@@ -63,6 +63,8 @@
 #define SIZE "Size"
 #define RESPAWN "Respawn"
 #define INTERACT "Interact"
+
+
 
 #define ACTORSCALE GetActorScale()
 #define PAWN GetWorld()->GetFirstPlayerController()->GetPawn()
