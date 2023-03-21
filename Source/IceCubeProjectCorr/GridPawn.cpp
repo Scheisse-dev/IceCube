@@ -10,24 +10,23 @@ AGridPawn::AGridPawn()
 	RootComponent = mesh;
 	camera = CreateDefaultSubobject<UCameraComponent>("camera");
 	spring = CreateDefaultSubobject<USpringArmComponent>("springArm");
-
+	demo = CreateDefaultSubobject<UDemoModeComponent>("demo");
 	spring->SetupAttachment(RootComponent);
 	camera->SetupAttachment(spring);
 
-
+	AddOwnedComponent(demo);
 }
 void AGridPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
 	InitPawn();
-	//SetRandom();
-	startTimer = true;
+
 }
 void AGridPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Timer();
+
 
 }
 void AGridPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -46,7 +45,11 @@ void AGridPawn::InitPawn()
 		return;
 	grid->SnapToStart(this);
 	SelectGridCell();
-
+	if (useDemoMode && demo)
+	{
+		demo->StartDemo(1);
+		DisableInput(FPC);
+	}
 
 }
 TObjectPtr<AGrid> AGridPawn::GetGrid() const
@@ -87,69 +90,3 @@ void AGridPawn::SelectGridCell()
 	grid->PickLocation(this);
 }
 
-void AGridPawn::SetRandom()
-{
-	randomList.Empty();
-	moveNumber = FMath::RandRange(3,6);
-	for (size_t i = 0; i < moveNumber; i++)
-	{
-		float _move = FMath::RandRange(0, 3);
-		randomList.Add(_move);
-	}
-
-
-	
-}
-
-void AGridPawn::Timer()
-{
-	if (!startTimer)
-		return; 
-	timer += DELTATIME;
-	if (timer > timerGap)
-	{
-		//onGap.Broadcast();
-		timer = 0;
-		timerLoop += 1;
-		AutoPlay();
-		LOG_W(LogTemp, "%f", timerLoop)
-	}
-	if (timerLoop == moveNumber)
-	{
-		//onTimerEnd.Broadcast();
-		timer = 0;
-		timerLoop = 0;
-		startTimer = false;
-		ResetTimer();
-		SelectGridCell();
-		
-	}
-}
-
-void AGridPawn::AutoPlay()
-{
-	if (!testMod)
-		return;
-	float _move = FMath::RandRange(0, 3);
-
-	//for (float _movement : randomList)
-	//{
-		if (_move == 0)
-			UpMove();
-		else if (_move == 1)
-			DownMove();
-		else if (_move == 2)
-			RightMove();
-		else if (_move == 3)
-			LeftMove();
-	//}
-	
-
-}
-void AGridPawn::ResetTimer()
-{
-	timer = 0;
-	timerLoop = 0;
-	startTimer = true;
-	SetRandom();
-}

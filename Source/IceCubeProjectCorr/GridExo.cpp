@@ -1,25 +1,25 @@
-#include "Greed.h"
+#include "GridExo.h"
 #include "Utils.h"
 
-AGreed::AGreed()
+AGridExo::AGridExo()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	mesh = CREATE(UStaticMeshComponent, "mesh");
 	RootComponent = mesh;
 }
-void AGreed::BeginPlay()
+void AGridExo::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
-void AGreed::Tick(float DeltaTime)
+void AGridExo::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	DrawBoard();
 	//DRAW_LINE(FVector(0, 0, 0), FVector(300, 0, 0), FColor::Green, 2);
 }
 
-void AGreed::DrawBoard()
+void AGridExo::DrawBoard()
 {
 	for (int i = 0; i < settings.pointNumber; i++)
 	{

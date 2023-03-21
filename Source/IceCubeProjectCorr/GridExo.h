@@ -3,12 +3,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BoardSettings.h"
-#include "Greed.generated.h"
+#include "GridExo.generated.h"
 
 
 
 UCLASS()
-class ICECUBEPROJECTCORR_API AGreed : public AActor
+class ICECUBEPROJECTCORR_API AGridExo : public AActor
 {
 	GENERATED_BODY()
 
@@ -20,7 +20,7 @@ class ICECUBEPROJECTCORR_API AGreed : public AActor
 
 	
 public:	
-	AGreed();
+	AGridExo();
 
 protected:
 	virtual void BeginPlay() override;	
